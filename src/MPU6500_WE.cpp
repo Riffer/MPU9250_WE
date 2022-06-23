@@ -207,6 +207,10 @@ bool MPU6500_WE::init(uint8_t const expectedValue){
     writeMPU9250Register(REGISTER_INT_PIN_CFG, REGISTER_VALUE_BYPASS_EN);  // Bypass Enable
     delay(10);
     if(whoAmI() != expectedValue){
+        Serial.print("whoAmI():");
+        Serial.print(whoAmI());
+        Serial.print("\texpected:");
+        Serial.println( expectedValue);
         return false;
     }
 
@@ -254,11 +258,28 @@ void MPU6500_WE::autoOffsets(){
 
     // acceleration
     accelerationOffsetAccumulator /= 50.f;
-    accelerationOffsetAccumulator.z -= 16384.0f;
+
+    // guess which one is bottom face
+    float bottom = max({accelerationOffsetAccumulator.x, accelerationOffsetAccumulator.y, accelerationOffsetAccumulator.z});
+
+    if (accelerationOffsetAccumulator.x == bottom)
+        accelerationOffsetAccumulator.x -= 16384.0f;
+    if (accelerationOffsetAccumulator.y == bottom)
+        accelerationOffsetAccumulator.y -= 16384.0f;
+    if (accelerationOffsetAccumulator.z == bottom)
+        accelerationOffsetAccumulator.z -= 16384.0f;
+
     accOffsetVal = accelerationOffsetAccumulator;
     // gyro
     gyrOffsetVal = gyroOffsetAccumulator / 50.f;
+}
 
+xyzFloat MPU6500_WE::getAccOffset()
+{
+    Serial.println("accOffsets:");
+    Serial.printf("x:%6f\ty:%6f\tz:%6f\n", accOffsetVal.x, accOffsetVal.z, accOffsetVal.y);
+
+    return accOffsetVal;
 }
 
 void MPU6500_WE::setAccOffsets(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax){

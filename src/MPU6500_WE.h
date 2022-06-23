@@ -257,6 +257,7 @@ public:
     uint8_t whoAmI();
     void autoOffsets();
     void setAccOffsets(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax);
+    xyzFloat getAccOffset();
     void setGyrOffsets(float xOffset, float yOffset, float zOffset);
     void setGyrDLPF(MPU9250_dlpf dlpf);
     void setSampleRateDivider(uint8_t splRateDiv);
@@ -346,13 +347,13 @@ protected:
     int const csPin = 10;
     bool useSPI = false;
 
-private:
     xyzFloat accOffsetVal;
+
+private:
     xyzFloat gyrOffsetVal;
     uint8_t accRangeFactor;
     uint8_t gyrRangeFactor;
     MPU9250_fifo_type fifoType;
-
 };
 
 #endif // MPU6500_WE_H_
