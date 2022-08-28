@@ -275,7 +275,7 @@ void MPU6500_WE::autoOffsets()
 
     Serial.printf("Accum:\nx: %f , y: %f, z: %f\n", accelerationOffsetAccumulator.x, accelerationOffsetAccumulator.y, accelerationOffsetAccumulator.z);
     // guess which one is bottom face
-    float bottom = max({abs(accelerationOffsetAccumulator.x), abs(accelerationOffsetAccumulator.y), abs(accelerationOffsetAccumulator.z)});
+    //float bottom = max({abs(accelerationOffsetAccumulator.x), abs(accelerationOffsetAccumulator.y), abs(accelerationOffsetAccumulator.z)});
 
     //if (abs(accelerationOffsetAccumulator.x) == bottom)
     //    accelerationOffsetAccumulator.x -= (16384.0f * (signbit(accelerationOffsetAccumulator.x)? 1: -1));
